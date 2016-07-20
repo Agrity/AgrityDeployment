@@ -17,21 +17,17 @@ def __checkActivatorPresent():
 def __compile():
     os.system('./activator clean compile universal:package-zip-tarball')
 
-
-def __getDestinationAddress(prod):
-    return constants.PROD_SERVER_URL if prod else constants.TEST_SERVER_URL
-
 def __printStart():
-    print
-    print '+++ Start Compile'
-    print '========================================'
-    print
+    print()
+    print('+++ Start Compile')
+    print('========================================')
+    print()
 
 def __printWrongFolderArea():
-    print 'Invalid Current Working Directory:'
-    print 'Should be called in base directory of play application.'
+    print('Invalid Current Working Directory:')
+    print('Should be called in base directory of play application.')
 
 def __printUseCase():
-    print 'Invalid Arguments:'
-    print '\texample: agrity ' + constants.COMPILE_COMMAND
+    print('Invalid Arguments:')
+    print('\texample: agrity ' + constants.COMPILE_COMMAND)
 

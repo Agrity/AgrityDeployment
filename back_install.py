@@ -1,5 +1,5 @@
 import push, constants
-import sys, getopt, subprocess, os, tarfile, pygame
+import sys, getopt, subprocess, os, tarfile
 
 def installServer(argv):
     __printStart()
@@ -11,7 +11,7 @@ def installServer(argv):
     try:
         opts, args = getopt.getopt(argv, 'f:pd', ['file=', 'prod', 'apply-downs'])
     except getopt.GetoptError:
-        printUseCase()
+        __printUseCase()
         sys.exit(2)
 
     for opt, arg in opts:
@@ -35,66 +35,45 @@ def installServer(argv):
 
     
     if zippedServer == '':
-        printUseCase()
+        __printUseCase()
         sys.exit(2)
     
     __sendInstallScript(prod)
 
     command = 'sh ' + constants.INSTALL_SCRIPT_NAME \
             + ' ' + zippedServer \
-            + ' ' + constants.APP_NAME \
+            + ' ' + constants.SERVER_NAME \
             + ' ' + __getConfigResource(prod) \
             + ' ' + additionalConfig
 
     ssh = subprocess.Popen(["ssh", '-i', constants.PEM_LOCATION,
-                            __getDestinationAddress(prod), command],
+                            constants.getDestinationAddress(prod), command],
                        shell=False,
                        stdout=subprocess.PIPE,
                        stderr=subprocess.PIPE)
 
-    #__initPygame()
-
     for line in iter(ssh.stdout.readline, ''):
-        sys.stdout.write(line)
-        
-
-    #result = ssh.stdout.readlines()
-    #if result == []:
-    #    error = ssh.stderr.readlines()
-    #    print >>sys.stderr, "ERROR: %s" % error
-    #else:
-    #    for line in result:
-    #        print line
-
-def __initPygame():
-    pygame.init()
-    screen = pygame.display.set_mode((640, 480))
-    pygame.display.set_caption('Agrity Server Install')
-    pygame.mouse.set_visible(0)
-
-def __getDestinationAddress(prod):
-    return constants.PROD_SERVER_URL if prod else constants.TEST_SERVER_URL
+        sys.stdout.write(line.decode('utf-8'))
 
 def __getConfigResource(prod):
     resource = constants.PROD_RESOURCE if prod else constants.TEST_RESOURCE
     return '-Dconfig.resource=' + resource
 
 def __sendInstallScript(prod):
-    args = ['-f', constants.INSTALL_SCRIPT_LOCATION]
-    if prod:
-        args.append('-p')
-    push.pushServer(args)
+    push.pushAWSFile(
+            constants.INSTALL_SCRIPT_LOCATION,
+            constants.getDestinationLocation(prod))
 
 def __downsInProdError():
-    print >>sys.stderr, 'Error: Cannot use downs on production server'
+    print('Error: Cannot use downs on production server')
 
 def __printStart():
-    print
-    print '+++ Start Install'
-    print '========================================'
-    print
+    print()
+    print('+++ Start Install')
+    print('========================================')
+    print()
 
 def __printUseCase():
-    print 'Invalid Arguments:'
-    print '\texample: agrity ' + constants.INSTALL_COMMAND \
-            + ' -f <zipped-server-file> [-p]'
+    print('Invalid Arguments:')
+    print('\texample: agrity ' + constants.INSTALL_COMMAND \
+            + ' -f <zipped-server-file> [-p]')
