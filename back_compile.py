@@ -17,10 +17,6 @@ def __checkActivatorPresent():
 def __compile():
     os.system('./activator clean compile universal:package-zip-tarball')
 
-
-def __getDestinationAddress(prod):
-    return constants.PROD_SERVER_URL if prod else constants.TEST_SERVER_URL
-
 def __printStart():
     print()
     print('+++ Start Compile')

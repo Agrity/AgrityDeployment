@@ -42,7 +42,7 @@ def installServer(argv):
 
     command = 'sh ' + constants.INSTALL_SCRIPT_NAME \
             + ' ' + zippedServer \
-            + ' ' + constants.APP_NAME \
+            + ' ' + constants.SERVER_NAME \
             + ' ' + __getConfigResource(prod) \
             + ' ' + additionalConfig
 
