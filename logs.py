@@ -31,6 +31,6 @@ def __getDestinationAddress(prod):
     return constants.PROD_SERVER_URL if prod else constants.TEST_SERVER_URL
 
 def __printUseCase():
-    print 'Invalid Arguments:'
-    print '\texample: agrity ' + constants.LOGS_COMMAND + ' [-p]'
+    print('Invalid Arguments:')
+    print('\texample: agrity ' + constants.LOGS_COMMAND + ' [-p]')
 

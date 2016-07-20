@@ -1,10 +1,9 @@
-import compiler, push, install
+import back_compile, back_push, back_install
 import sys, getopt, subprocess, os
 
 def deployServer(argv):
-
     # Will exit if in incorrect working directory
-    compiler.compile(argv)
+    back_compile.compile(argv)
 
     zippedServer = ''
 
@@ -17,8 +16,8 @@ def deployServer(argv):
     argv.append('-f')
     argv.append(zippedServer)
 
-    push.pushServer(argv)
-    install.installServer(argv)
+    back_push.pushServer(argv)
+    back_install.installServer(argv)
 
 def __checkActivatorPresent():
     return os.path.isfile('activator')
@@ -31,10 +30,10 @@ def __getDestinationAddress(prod):
     return constants.PROD_SERVER_URL if prod else constants.TEST_SERVER_URL
 
 def __printWrongFolderArea():
-    print 'Invalid Current Working Directory:'
-    print 'Should be called in base directory of play application.'
+    print('Invalid Current Working Directory:')
+    print('Should be called in base directory of play application.')
 
 def __printUseCase():
-    print 'Invalid Arguments:'
-    print '\texample: agrity ' + constants.LOGS_COMMAND + ' [-p]'
+    print('Invalid Arguments:')
+    print('\texample: agrity ' + constants.LOGS_COMMAND + ' [-p]')
 
